@@ -18,7 +18,7 @@ jobs:
       steps:
           - uses: azure/login@v1
             with:
-              creds: ${{ secrets.AZURE_CREDENTIALS }}
+              creds: '{"clientId":"${{fromJSON(secrets.AZURE_CREDENTIALS)['clientId']}}","clientSecret":"${{fromJSON(secrets.AZURE_CREDENTIALS)['clientSecret']}}","subscriptionId":"${{fromJSON(secrets.AZURE_CREDENTIALS)['subscriptionId']}}","tenantId":"${{fromJSON(secrets.AZURE_CREDENTIALS)['tenantId']}}"}'
               enable-AzPSSession: true
           
           - name: 'Get RG with powershell action'
