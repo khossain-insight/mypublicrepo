@@ -1,0 +1,31 @@
+name: create a rg
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+          type: string
+          description: 'Deployment Environment'
+          required: true
+  
+jobs:
+    deploy-rg :
+      runs-on : ubuntu-latest
+      environment: ${{ github.event.inputs.environment}}
+      env:
+        resource_group_name : my-${{ github.event.inputs.environment}}-001
+      
+      steps:
+          - uses: azure/login@v1
+            with:
+              creds: ${{ secrets.AZURE_CREDENTIALS }}
+              enable-AzPSSession: true
+          
+          - name: 'Get RG with powershell action'
+            uses: azure/powershell@v1
+            with:
+              inlineScript: |
+                New-AzResourceGroup -Name ${{env.resource_group_name}} -Location "South Central US"
+              azPSVersion: "latest"
+             
+
